@@ -14,10 +14,8 @@ class MyApp extends StatelessWidget {
       title: 'Carros',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-
       ),
       home: LoginPage(),
     );
   }
 }
-
