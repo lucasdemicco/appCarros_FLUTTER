@@ -1,11 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final _tLogin = TextEditingController();
+
   final _tSenha = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  final _focusSenha = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +37,21 @@ class LoginPage extends StatelessWidget {
         padding: EdgeInsets.all(16),
         child: ListView(
           children: <Widget>[
-            _textFormField("Login", "Digite seu login", controller: _tLogin,
+            _textFormField("Login", "Digite seu login",
+                controller: _tLogin,
                 validator: _validateLogin,
-            ),
+                keyboardType: TextInputType.emailAddress,
+                textInputAction: TextInputAction.next,
+                nextFocus: _focusSenha),
             SizedBox(
               height: 10,
             ),
             _textFormField("Senha", "Digite sua senha",
-                password: true, controller: _tSenha, validator: _validatePassword,
+                password: true,
+                controller: _tSenha,
+                validator: _validatePassword,
+                keyboardType: TextInputType.number,
+                focusNode: _focusSenha
             ),
             SizedBox(
               height: 20,
@@ -43,16 +63,26 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  //MÉTODOS WIDGETS
-
   _textFormField(String label, String hint,
       {bool password = false,
       controller,
-      FormFieldValidator<String>? validator}) {
+      FormFieldValidator<String>? validator,
+      TextInputType? keyboardType,
+      TextInputAction? textInputAction,
+      FocusNode? focusNode,
+      FocusNode? nextFocus}) {
     return TextFormField(
       controller: controller,
       obscureText: password,
       validator: validator,
+      keyboardType: keyboardType,
+      textInputAction: textInputAction,
+      focusNode: focusNode,
+      onFieldSubmitted: (String text) {
+        if (nextFocus != null) {
+          FocusScope.of(context).requestFocus(nextFocus);
+        }
+      },
       style: TextStyle(color: Colors.blue, fontSize: 20),
       decoration: InputDecoration(
           labelText: label,
@@ -78,9 +108,6 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  /*
-  Métodos de validação de formulários Login e Senha
-   */
   String? _validateLogin(String? value) {
     if (value!.isEmpty) {
       return "Digite o login!";
@@ -92,15 +119,12 @@ class LoginPage extends StatelessWidget {
     if (value!.isEmpty) {
       return "Digite sua senha!";
     }
-    if(value.length < 6){
+    if (value.length < 6) {
       return "A senha precisa ter no mínimo 6 caracteres";
     }
     return null;
   }
 
-  /*
-  Ação de Clique do botão Login
-   */
   _onClickLogin() {
     bool formOk = _formKey.currentState!.validate();
     if (!formOk) {
