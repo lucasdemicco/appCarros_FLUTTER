@@ -92,6 +92,9 @@ class LoginPage extends StatelessWidget {
     if (value!.isEmpty) {
       return "Digite sua senha!";
     }
+    if(value.length < 6){
+      return "A senha precisa ter no mínimo 6 caracteres";
+    }
     return null;
   }
 
