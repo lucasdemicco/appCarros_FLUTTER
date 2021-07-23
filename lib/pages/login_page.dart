@@ -1,3 +1,5 @@
+import 'package:app_carros/widgets/app_button.dart';
+import 'package:app_carros/widgets/app_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -37,73 +39,27 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.all(16),
         child: ListView(
           children: <Widget>[
-            _textFormField("Login", "Digite seu login",
+           AppText("Login", "Digite seu login",
                 controller: _tLogin,
                 validator: _validateLogin,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
-                nextFocus: _focusSenha),
+                nextFocus: _focusSenha,),
             SizedBox(
               height: 10,
             ),
-            _textFormField("Senha", "Digite sua senha",
+            AppText("Senha", "Digite sua senha",
                 password: true,
                 controller: _tSenha,
                 validator: _validatePassword,
                 keyboardType: TextInputType.number,
-                focusNode: _focusSenha
-            ),
+                focusNode: _focusSenha),
             SizedBox(
               height: 20,
             ),
-            _button("Login", _onClickLogin)
+            AppButton("Login", onPressed: _onClickLogin)
           ],
         ),
-      ),
-    );
-  }
-
-  _textFormField(String label, String hint,
-      {bool password = false,
-      controller,
-      FormFieldValidator<String>? validator,
-      TextInputType? keyboardType,
-      TextInputAction? textInputAction,
-      FocusNode? focusNode,
-      FocusNode? nextFocus}) {
-    return TextFormField(
-      controller: controller,
-      obscureText: password,
-      validator: validator,
-      keyboardType: keyboardType,
-      textInputAction: textInputAction,
-      focusNode: focusNode,
-      onFieldSubmitted: (String text) {
-        if (nextFocus != null) {
-          FocusScope.of(context).requestFocus(nextFocus);
-        }
-      },
-      style: TextStyle(color: Colors.blue, fontSize: 20),
-      decoration: InputDecoration(
-          labelText: label,
-          labelStyle: TextStyle(color: Colors.grey, fontSize: 25),
-          hintText: hint),
-    );
-  }
-
-  _button(String text, onPressed) {
-    return Container(
-      height: 46,
-      child: RaisedButton(
-        color: Colors.blue,
-        child: Text(
-          text,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 22,
-          ),
-        ),
-        onPressed: onPressed,
       ),
     );
   }
